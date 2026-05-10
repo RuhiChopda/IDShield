@@ -173,7 +173,7 @@ def homepage():
 
 @app.route("/adminhome")
 def adminhome():
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cursor = conn.cursor()
     cursor.execute("select * from user")
     data = cursor.fetchall()
@@ -182,7 +182,7 @@ def adminhome():
 @app.route("/userhome")
 def userhome():
     uname=session['uname']
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cursor = conn.cursor()
     cursor.execute("select * from user where uname='" + uname + "'")
     data = cursor.fetchall()
@@ -199,7 +199,7 @@ def number():
 @app.route("/view1")
 def view1():
     uname = session['uname']
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cursor = conn.cursor()
     cursor.execute("select * from filetrans where uname='" + uname + "'")
     data = cursor.fetchall()
@@ -210,7 +210,7 @@ def imgview():
     uname = session['uname']
     id = request.args.get('id')
     session['did']=id
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cursor = conn.cursor()
     cursor.execute("select * from filetrans where uname='" + uname + "'")
     data = cursor.fetchall()
@@ -218,7 +218,7 @@ def imgview():
 
 @app.route("/amount")
 def amount():
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cur = conn.cursor()
     cur.execute("SELECT * FROM user")
     data = cur.fetchall()
@@ -226,7 +226,7 @@ def amount():
 
 @app.route("/userview")
 def userview():
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cur = conn.cursor()
     cur.execute("SELECT * FROM user")
     data = cur.fetchall()
@@ -241,14 +241,14 @@ def adminlog():
     if request.method == 'POST':
         uname=request.form['uname']
         password=request.form['password']
-        conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+        conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
         cursor = conn.cursor()
         cursor.execute("select * from admin where uname='"+uname+"' and password='"+password+"'")
         data=cursor.fetchone()
         if data is None:
             return "user name and password incorrect"
         else:
-            conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+            conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
             cursor = conn.cursor()
             cursor.execute("select * from user")
             data = cursor.fetchall()
@@ -259,14 +259,14 @@ def ukey():
     if request.method == 'POST':
         key=request.form['key']
         id=session['did']
-        conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+        conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
         cursor = conn.cursor()
         cursor.execute("select * from filetrans where id='"+id+"' and key1='"+key+"'")
         data=cursor.fetchone()
         if data is None:
             return "Key incorrect"
         else:
-            conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+            conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
             cursor = conn.cursor()
             cursor.execute("select * from filetrans where id='"+id+"'")
             data = cursor.fetchall()
@@ -286,7 +286,7 @@ def newregister():
         address = request.form['address']
         uname = request.form['uname']
         password = request.form['password']
-        conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+        conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
         cursor = conn.cursor()
         cursor.execute(
             "insert into user values('','" + name + "','" + gender + "','" + address + "','" + email + "','" + pnumber + "','" + uname + "','" + password + "')")
@@ -300,14 +300,14 @@ def userlog():
         uname = request.form['uname']
         password = request.form['password']
         session['uname'] = request.form['uname']
-        conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+        conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
         cursor = conn.cursor()
         cursor.execute("select * from user where uname='" + uname + "' and password='" + password + "'")
         data = cursor.fetchone()
         if data is None:
             return "user name and password incorrect"
         else:
-            conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+            conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
             cursor = conn.cursor()
             cursor.execute("select * from user where uname='" + uname + "' and password='" + password + "'")
             data = cursor.fetchall()
@@ -315,7 +315,7 @@ def userlog():
 
 @app.route("/view")
 def view():
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cur = conn.cursor()
     cur.execute("SELECT * FROM filetrans")
     data = cur.fetchall()
@@ -323,7 +323,7 @@ def view():
 
 @app.route("/view3")
 def view3():
-    conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+    conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
     cur = conn.cursor()
     cur.execute("SELECT * FROM amount")
     data = cur.fetchall()
@@ -367,7 +367,7 @@ def fileupload():
         else:
             encode_text_to_image(str(res), input_image_path, "static/uploads/" + str(key1) + "encoded_image.png")
 
-        conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+        conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
         cursor = conn.cursor()
         key2 = secrets.token_hex(4)
         cursor.execute(
@@ -413,7 +413,7 @@ def verimg():
             n = [b[i:i + 8] for i in range(0, len(b), 8)]
             s2 = ''.join(chr(int(i, 2)) for i in n)
             print(s2)
-            conn = mysql.connector.connect(user='root', password='', host='localhost', database='faceMDT')
+            conn = mysql.connector.connect(user='root', password='', host='localhost', database='facemdt')
             cur = conn.cursor()
             cur.execute("SELECT * FROM filetrans where bstr='" + str(x[0]) + "'")
             data = cur.fetchall()
