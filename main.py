@@ -10,10 +10,10 @@ app.config.from_object(__name__)
 app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 
 # ================= DATABASE CONFIG =================
-DB_HOST = "YOUR_HOST"
-DB_USER = "YOUR_USERNAME"
-DB_PASSWORD = "YOUR_PASSWORD"
-DB_NAME = "YOUR_DATABASE"
+DB_HOST = "sql3.freesqldatabase.com"
+DB_USER = "sql3826070"
+DB_PASSWORD = "4qrwmzVuE1"
+DB_NAME = "sql3826070"
 DB_PORT = 3306
 
 def get_db_connection():
