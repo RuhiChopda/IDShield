@@ -233,16 +233,53 @@ def decode_text_from_image(image_path):
 def homepage():
     return render_template('index.html')
 
+@app.route("/admin")
+def admin():
+    return render_template('AdminLogin.html')
+
+@app.route("/adminlog", methods=['GET', 'POST'])
+def adminlog():
+
+    if request.method == 'POST':
+
+        uname = request.form['uname']
+        password = request.form['password']
+
+        if uname == "admin" and password == "admin":
+
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("select * from user")
+            data = cursor.fetchall()
+
+            conn.close()
+
+            return render_template("adminhome.html", data=data)
+
+        else:
+
+            return "Invalid Admin Login"
+
 @app.route("/adminhome")
 def adminhome():
     conn = get_db_connection()
     cursor = conn.cursor()
+
     cursor.execute("select * from user")
     data = cursor.fetchall()
+
+    conn.close()
+
     return render_template("adminhome.html", data=data)
+
+@app.route("/user")
+def user():
+    return render_template('UserLogin.html')
 
 @app.route("/userhome")
 def userhome():
+
     uname = session['uname']
 
     conn = get_db_connection()
@@ -251,6 +288,8 @@ def userhome():
     cursor.execute("select * from user where uname='" + uname + "'")
 
     data = cursor.fetchall()
+
+    conn.close()
 
     return render_template("userhome.html", data=data)
 
@@ -264,6 +303,7 @@ def number():
 
 @app.route("/view1")
 def view1():
+
     uname = session['uname']
 
     conn = get_db_connection()
@@ -273,10 +313,13 @@ def view1():
 
     data = cursor.fetchall()
 
+    conn.close()
+
     return render_template('view1.html', data=data)
 
 @app.route("/imgview")
 def imgview():
+
     uname = session['uname']
     id = request.args.get('id')
 
@@ -289,18 +332,13 @@ def imgview():
 
     data = cursor.fetchall()
 
+    conn.close()
+
     return render_template('imgview.html', data=data)
-
-@app.route("/admin")
-def admin():
-    return render_template('AdminLogin.html')
-
-@app.route("/user")
-def user():
-    return render_template('UserLogin.html')
 
 @app.route("/newregister", methods=['GET', 'POST'])
 def newregister():
+
     if request.method == 'POST':
 
         name = request.form['name']
@@ -315,14 +353,8 @@ def newregister():
         cursor = conn.cursor()
 
         cursor.execute(
-            "insert into user values('','" +
-            name + "','" +
-            gender + "','" +
-            address + "','" +
-            email + "','" +
-            pnumber + "','" +
-            uname + "','" +
-            password + "')"
+            "insert into user values(%s,%s,%s,%s,%s,%s,%s,%s)",
+            ('', name, gender, address, email, pnumber, uname, password)
         )
 
         conn.commit()
@@ -332,6 +364,7 @@ def newregister():
 
 @app.route("/userlog", methods=['GET', 'POST'])
 def userlog():
+
     if request.method == 'POST':
 
         uname = request.form['uname']
@@ -343,14 +376,13 @@ def userlog():
         cursor = conn.cursor()
 
         cursor.execute(
-            "select * from user where uname='" +
-            uname +
-            "' and password='" +
-            password +
-            "'"
+            "select * from user where uname=%s and password=%s",
+            (uname, password)
         )
 
         data = cursor.fetchone()
+
+        conn.close()
 
         if data is None:
             return "user name and password incorrect"
@@ -360,6 +392,7 @@ def userlog():
 
 @app.route("/fileupload", methods=['GET', 'POST'])
 def fileupload():
+
     if request.method == 'POST':
 
         name = request.form['name']
@@ -408,7 +441,6 @@ def fileupload():
             )
 
         conn = get_db_connection()
-
         cursor = conn.cursor()
 
         key2 = secrets.token_hex(4)
@@ -439,6 +471,7 @@ def fileupload():
 
 @app.route("/verimg", methods=['GET', 'POST'])
 def verimg():
+
     if request.method == 'POST':
 
         f = request.files['file']
@@ -467,16 +500,17 @@ def verimg():
 
         if s == True:
 
-            b = x[0]
-
             conn = get_db_connection()
             cur = conn.cursor()
 
             cur.execute(
-                "SELECT * FROM filetrans where bstr='" + str(x[0]) + "'"
+                "SELECT * FROM filetrans where bstr=%s",
+                (str(x[0]),)
             )
 
             data = cur.fetchall()
+
+            conn.close()
 
             if not data:
                 status = "Fake"
